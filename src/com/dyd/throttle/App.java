@@ -10,5 +10,7 @@ public class App {
         for (int i = 1; i <= 3; i++) {
             pool.execute(new Worker("worker " + i));
         }
+
+        pool.shutdown();
     }
 }
