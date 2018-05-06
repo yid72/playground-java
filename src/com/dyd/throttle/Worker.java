@@ -9,9 +9,9 @@ public class Worker implements Runnable {
 
     public void run() {
         final MyService myService = new MyService();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 10; i++) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
             }
             myService.myApi(name + ": counter " + String.valueOf(i));
