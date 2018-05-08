@@ -4,7 +4,7 @@ public class MyService {
     public void myApi(String message) {
         try {
             ThrottleService throttleService = ThrottleServiceFactory.getInstance().getThrottleService(
-                    ThrottleServiceFactory.FIXED_WINDOW_THROTTLE_SERVICE);
+                    ThrottleServiceFactory.TOKEN_BUCKET_THROTTLE_SERVICE);
             throttleService.check();
         } catch (final ThrottleException e) {
             System.out.println(message + ". " + e.getMessage());
