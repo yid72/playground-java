@@ -1,23 +1,23 @@
-package com.dyd.throttle;
+package com.dyd.ratelimiter;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class FixedWindowThrottleService implements ThrottleService {
+public class FixedWindowRateLimiter implements RateLimiter {
     private static final int PERIOD = 1000;
 
     private final int threshold;
     private int count = 0;
 
-    public FixedWindowThrottleService(final Timer timer, final int threshold) {
+    public FixedWindowRateLimiter(final Timer timer, final int threshold) {
         timer.schedule(new CleanupTask(), 0, PERIOD);
         this.threshold = threshold;
     }
 
     @Override
-    public synchronized void check() throws ThrottleException {
+    public synchronized void check() throws RateLimiterException {
         if (count >= threshold) {
-            throw new ThrottleException(
+            throw new RateLimiterException(
                     String.format(
                             "Throttled. Limit = %d", threshold
                     )

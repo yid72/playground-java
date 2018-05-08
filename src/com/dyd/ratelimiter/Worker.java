@@ -1,4 +1,4 @@
-package com.dyd.throttle;
+package com.dyd.ratelimiter;
 
 public class Worker implements Runnable {
     private final String name;

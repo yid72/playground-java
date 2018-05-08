@@ -1,12 +1,12 @@
-package com.dyd.throttle;
+package com.dyd.ratelimiter;
 
 public class MyService {
     public void myApi(String message) {
         try {
-            ThrottleService throttleService = ThrottleServiceFactory.getInstance().getThrottleService(
-                    ThrottleServiceFactory.TOKEN_BUCKET_THROTTLE_SERVICE);
+            RateLimiter throttleService = RateLimiterFactory.getInstance().getRateLimiter(
+                    RateLimiterFactory.TOKEN_BUCKET_RATE_LIMITER);
             throttleService.check();
-        } catch (final ThrottleException e) {
+        } catch (final RateLimiterException e) {
             System.out.println(message + ". " + e.getMessage());
             return;
         }

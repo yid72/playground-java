@@ -1,21 +1,21 @@
-package com.dyd.throttle;
+package com.dyd.ratelimiter;
 
 import java.time.Instant;
 import java.util.*;
 
-public class TokenBucketThrottleService implements ThrottleService {
+public class TokenBucketRateLimiter implements RateLimiter {
     private final Queue<Instant> tokens;
 
-    public TokenBucketThrottleService(final Timer timer, final int threshold) {
+    public TokenBucketRateLimiter(final Timer timer, final int threshold) {
         timer.schedule(new TokenGenerationTask(), 0, 1000/threshold);
 
         tokens = new LinkedList<>();
     }
 
     @Override
-    public synchronized void check() throws ThrottleException {
+    public synchronized void check() throws RateLimiterException {
         if (tokens.size() == 0) {
-            throw new ThrottleException("Throttled");
+            throw new RateLimiterException("Throttled");
         }
 
         // Assign a token
