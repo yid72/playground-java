@@ -23,14 +23,22 @@ public class RateLimiterFactory {
         this.timer = new Timer();
 
         services = new HashMap<>();
-        services.put(FIXED_WINDOW_RATE_LIMITER, new FixedWindowRateLimiter(timer, THRESHOLD));
-        services.put(TOKEN_BUCKET_RATE_LIMITER, new TokenBucketRateLimiter(timer, THRESHOLD));
+        services.put(FIXED_WINDOW_RATE_LIMITER, new FixedWindowRateLimiter(THRESHOLD));
     }
 
     public RateLimiter getRateLimiter(final String name) {
+        if (!services.containsKey(name)) {
+            if (FIXED_WINDOW_RATE_LIMITER.equalsIgnoreCase(name)) {
+                services.put(FIXED_WINDOW_RATE_LIMITER, new FixedWindowRateLimiter(THRESHOLD));
+            } else if (TOKEN_BUCKET_RATE_LIMITER.equalsIgnoreCase(name)) {
+                services.put(TOKEN_BUCKET_RATE_LIMITER, new TokenBucketRateLimiter(timer, THRESHOLD));
+            }
+        }
+
         if (services.containsKey(name)) {
             return services.get(name);
         }
+
         throw new IllegalArgumentException("Unknown service " + name);
     }
 }

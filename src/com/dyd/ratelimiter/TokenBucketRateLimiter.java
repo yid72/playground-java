@@ -7,9 +7,8 @@ public class TokenBucketRateLimiter implements RateLimiter {
     private final Queue<Instant> tokens;
 
     public TokenBucketRateLimiter(final Timer timer, final int threshold) {
-        timer.schedule(new TokenGenerationTask(), 0, 1000/threshold);
-
         tokens = new LinkedList<>();
+        timer.schedule(new TokenGenerationTask(), 0, 1000/threshold);
     }
 
     @Override

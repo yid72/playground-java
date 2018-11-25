@@ -1,21 +1,24 @@
 package com.dyd.ratelimiter;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.time.Instant;
 
 public class FixedWindowRateLimiter implements RateLimiter {
-    private static final int PERIOD = 1000;
-
     private final int threshold;
+    private long second;
     private int count = 0;
 
-    public FixedWindowRateLimiter(final Timer timer, final int threshold) {
-        timer.schedule(new CleanupTask(), 0, PERIOD);
+    public FixedWindowRateLimiter(final int threshold) {
         this.threshold = threshold;
+        this.second = Instant.now().getEpochSecond();
     }
 
     @Override
     public synchronized void check() throws RateLimiterException {
+        long curSecond = Instant.now().getEpochSecond();
+        if (second < curSecond) {
+            count = 0;
+        }
+
         if (count >= threshold) {
             throw new RateLimiterException(
                     String.format(
@@ -25,16 +28,6 @@ public class FixedWindowRateLimiter implements RateLimiter {
         }
 
         count ++;
-    }
-
-    private synchronized void cleanup() {
-        count = 0;
-    }
-
-    class CleanupTask extends TimerTask {
-        @Override
-        public void run() {
-            cleanup();
-        }
+        second = curSecond;
     }
 }
