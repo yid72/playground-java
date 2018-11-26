@@ -1,6 +1,6 @@
 package com.dyd.jdk.suppressed;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HelloWorldTest {
     @Test
